@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 import Login from "../views/Login.vue";
+import NotFound from "../views/NotFound.vue";
 import Products from "../views/Products.vue";
 import RequestPassword from "../views/RequestPassword.vue";
 import ResetPassword from "../views/ResetPassword.vue";
@@ -50,7 +51,6 @@ const routes = [
     path: "/:pathMatch(.*)",
     name: "NotFound",
     component: NotFound,
-   
   },
 ];
 
