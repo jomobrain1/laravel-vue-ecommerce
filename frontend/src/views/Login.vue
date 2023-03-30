@@ -1,6 +1,6 @@
 <template>
-  <GuestLayout  title="Login to your account" @submitForm="login">
-    <form >
+  <GuestLayout  title="Login to your account">
+    <form method="post" @submit.prevent="login" >
       <div class="flex items-center text-lg mb-6 md:mb-8">
         <svg class="absolute ml-3" width="24" viewBox="0 0 24 24">
           <path
@@ -8,10 +8,12 @@
           />
         </svg>
         <input
-          type="text"
-          id="username"
+          type="email"
+          id="email"
           class="bg-gray-200 pl-12 py-2 md:py-4 focus:outline-none w-full"
-          placeholder="Username"
+          placeholder="email@example.com"
+          v-model="user.email"
+          
         />
       </div>
 
@@ -26,7 +28,13 @@
           id="password"
           class="bg-gray-200 pl-12 py-2 md:py-4 focus:outline-none w-full"
           placeholder="Password"
+          v-model="user.password"
         />
+      </div>
+      <div class="flex items-center">
+          <input id="remember-me" name="remember-me" type="checkbox" v-model="user.remember"
+                 class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"/>
+          <label for="remember-me" class="ml-2 block text-sm text-gray-900"> Remember me </label>
       </div>
 
       <button
@@ -47,10 +55,31 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import GuestLayout from "../components/GuestLayout.vue";
-function login(){
-    alert("login")
+let loading = ref(false);
+let errorMsg = ref("");
+
+const user = {
+  email: '',
+  password: '',
+  remember: false
 }
+
+function login() {
+  loading.value = true;
+  store.dispatch('login', user)
+    .then(() => {
+      loading.value = false;
+      router.push({name: 'app.dashboard'})
+    })
+    .catch(({response}) => {
+      loading.value = false;
+      errorMsg.value = response.data.message;
+      // .message comes from my backend
+    })
+}
+
 
 </script>
 
